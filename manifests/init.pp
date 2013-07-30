@@ -8,6 +8,9 @@
 # [*ntp_servers*]
 #   An array containing a list of ntp servers to use. Defaults to global 
 #   variable $ntp_servers.
+# [*monitor_email*]
+#   Email address where local service monitoring software sends it's reports to.
+#   Defaults to top scope variable $::servermonitor.
 #
 # == Examples
 #
@@ -26,7 +29,8 @@
 # See file LICENSE for details
 #
 class ntp(
-    $ntp_servers = $::ntp_servers
+    $ntp_servers = $::ntp_servers,
+    $monitor_email = $::servermonitor
 )
 {
     include ntp::install
@@ -38,6 +42,8 @@ class ntp(
     include ntp::service
 
     if tagged('monit') {
-        include ntp::monit
+        class { 'ntp::monit':
+            monitor_email => $monitor_email,
+        }
     }
 }

@@ -1,3 +1,5 @@
 check process ntpd with pidfile /var/run/ntpd.pid
    start program = "<%= scope.lookupvar('ntp::params::service_command') %> start"
    start program = "<%= scope.lookupvar('ntp::params::service_command') %> stop"
+   alert <%= scope.lookupvar('ntp::monit::monitor_email') %> with reminder on 480 cycles
+
