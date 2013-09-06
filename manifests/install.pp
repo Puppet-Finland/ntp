@@ -3,8 +3,14 @@
 # Install the ntp package
 #
 class ntp::install {
-    package { 'ntp-ntp':
-        name => 'ntp',
-        ensure => installed,
+
+    if $::osfamily == 'FreeBSD' {
+        # We do nothing, as ntpd is always installed. We still need to include 
+        # this class to satisfy dependencies in the ntp::config class.
+    } else {
+        package { 'ntp-ntp':
+            name => 'ntp',
+            ensure => installed,
+        }
     }
 }
