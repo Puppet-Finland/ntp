@@ -35,7 +35,7 @@ class ntp(
 {
 
 # Rationale for this is explained in init.pp of the sshd module
-if hiera('manage_ntp') != 'false' {
+if hiera('manage_ntp', 'true') != 'false' {
 
     include ntp::install
 
