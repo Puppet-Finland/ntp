@@ -33,6 +33,10 @@ class ntp(
     $monitor_email = $::servermonitor
 )
 {
+
+# Rationale for this is explained in init.pp of the sshd module
+if hiera('manage_ntp') != 'false' {
+
     include ntp::install
 
     class { 'ntp::config':
@@ -46,4 +50,5 @@ class ntp(
             monitor_email => $monitor_email,
         }
     }
+}
 }
