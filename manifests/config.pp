@@ -5,6 +5,7 @@
 #
 class ntp::config($ntp_servers)
 {
+    include os::params
     include ntp::params
 
     file { 'ntp-ntp.conf':
@@ -12,7 +13,7 @@ class ntp::config($ntp_servers)
         ensure => present,
         content => template('ntp/ntp.conf.erb'),
         owner => root,
-        group => "${::ntp::params::admingroup}",
+        group => "${::os::params::admingroup}",
         mode  => 644,
         require => Class['ntp::install'],
         notify => Class['ntp::service'],
