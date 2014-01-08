@@ -5,7 +5,7 @@ filegen loopstats file loopstats type day enable
 filegen peerstats file peerstats type day enable
 filegen clockstats file clockstats type day enable
 
-# Get ntp server list from a global puppet variable in site.pp
+# Configure external time sources
 <% ntp_servers.each do |val| -%>
 server <%= val %> iburst
 <% end -%>
@@ -16,3 +16,15 @@ restrict -6 default kod notrap nomodify nopeer noquery
 <% restrict_addresses.each do |val| -%>
 restrict <%= val %>
 <% end -%>
+
+<% if @orphan_line -%>
+# An ntpd acting as a server for other ntp daemons needs a fallback in case it 
+# loses connectivity to external time sources - hence the "tos orphan <stratum>" 
+# entry.
+<%= orphan_line %>
+<% end %>
+
+<% if @peer_line -%>
+# Co-operate with another ntpd peer
+<%= peer_line %>
+<% end %>
