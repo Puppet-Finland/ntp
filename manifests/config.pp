@@ -3,7 +3,11 @@
 #
 # Configure the ntp server
 #
-class ntp::config($ntp_servers)
+class ntp::config
+(
+    $ntp_servers,
+    $restrict_addresses
+)
 {
     include os::params
     include ntp::params

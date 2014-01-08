@@ -13,5 +13,6 @@ server <%= val %> iburst
 # Access control
 restrict -4 default kod notrap nomodify nopeer noquery
 restrict -6 default kod notrap nomodify nopeer noquery
-restrict 127.0.0.1
-restrict ::1
+<% restrict_addresses.each do |val| -%>
+restrict <%= val %>
+<% end -%>

@@ -8,6 +8,17 @@
 # [*ntp_servers*]
 #   An array containing a list of ntp servers to use. Defaults to global 
 #   variable $ntp_servers.
+# [*restrict_addresses*]
+#   An array containing a list of addresses from which to allow connections to 
+#   the ntpd, in the format used by ntp.conf "restrict" option, i.e.
+#
+#     restrict address [mask mask] [flag][...]
+#
+#   for example [ '10.232.31.0 mask 255.255.255.0', 'server.domain.com', ':1' ]
+#
+#   If the node is just an ntp client then the default value, [ '127.0.0.1', 
+#   '::1' ] is adequate. If the node is an ntp server serving time (e.g. for a 
+#   LAN), then make sure to allow connections from the appropriate addresses.
 # [*monitor_email*]
 #   Email address where local service monitoring software sends it's reports to.
 #   Defaults to top scope variable $::servermonitor.
@@ -30,6 +41,7 @@
 #
 class ntp(
     $ntp_servers = $::ntp_servers,
+    $restrict_addresses = [ '127.0.0.1', '::1' ],
     $monitor_email = $::servermonitor
 )
 {
@@ -40,7 +52,8 @@ if hiera('manage_ntp', 'true') != 'false' {
     include ntp::install
 
     class { 'ntp::config':
-        ntp_servers => $ntp_servers
+        ntp_servers => $ntp_servers,
+        restrict_addresses => $restrict_addresses,
     }
 
     include ntp::service
