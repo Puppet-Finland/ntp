@@ -19,6 +19,15 @@
 #   If the node is just an ntp client then the default value, [ '127.0.0.1', 
 #   '::1' ] is adequate. If the node is an ntp server serving time (e.g. for a 
 #   LAN), then make sure to allow connections from the appropriate addresses.
+# [*allow_address_ipv4*]
+#   IPv4 address/network from which to allow connections through the firewall.
+#   Only affects packet filtering rules on nodes which have included the
+#   'packetfilter' class. A special value, 'any', can be used to allow any hosts
+#   from any IPv4 address to connect to this ntpd instance. Defaults to '127.0.0.1'.
+# [*allow_address_ipv6*]
+#   IPv6 address/network from which to allow connections through the firewall. 
+#   The same options/limitations apply as for $allow_address_ipv4. Defaults to 
+#   '::1'.
 # [*peer*]
 #   The address of a peer ntpd server. This is only needed if you want several 
 #   ntpd servers to co-operate so that if a peer looses connectivity to external 
@@ -59,6 +68,8 @@ class ntp
 (
     $ntp_servers = $::ntp_servers,
     $restrict_addresses = [ '127.0.0.1', '::1' ],
+    $allow_address_ipv4 = '127.0.0.1',
+    $allow_address_ipv6 = '::1',    
     $peer = '',
     $orphan_stratum = '',
     $monitor_email = $::servermonitor
@@ -78,6 +89,13 @@ if hiera('manage_ntp', 'true') != 'false' {
     }
 
     include ntp::service
+
+    if tagged('packetfilter') {
+        class { 'ntp::packetfilter':
+            allow_address_ipv4 => $allow_address_ipv4,
+            allow_address_ipv6 => $allow_address_ipv6,
+        }
+    }
 
     if tagged('monit') {
         class { 'ntp::monit':
