@@ -15,9 +15,13 @@ server <%= val %> iburst
 # Access control
 restrict -4 default kod notrap nomodify nopeer noquery
 restrict -6 default kod notrap nomodify nopeer noquery
-<% restrict_addresses.each do |val| -%>
-restrict <%= val %>
+restrict 127.0.0.1
+restrict ::1
+<% if @restrict_lines -%>
+<% restrict_lines.each do |val| -%>
+restrict <%= val %> notrap nomodify
 <% end -%>
+<% end %>
 
 <% if @orphan_line -%>
 # An ntpd acting as a server for other ntp daemons needs a fallback in case it 

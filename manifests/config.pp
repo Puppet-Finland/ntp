@@ -14,6 +14,13 @@ class ntp::config
     include os::params
     include ntp::params
 
+    # Check we have extra restrict lines
+    if $restrict_addresses == '' {
+        $restrict_lines = undef
+    } else {
+        $restrict_lines = $restrict_addresses
+    }
+
     # Check if a peer is defined (for servers)
     if $peer == '' {
         $peer_line = undef
