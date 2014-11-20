@@ -50,19 +50,19 @@
 #
 # == Examples
 #
-# class { 'ntp':
-#   ntp_servers => [ '0.fi.pool.ntp.org', '1.fi.pool.ntp.org' ]
-# }
+#   class { 'ntp':
+#       ntp_servers => [ '0.fi.pool.ntp.org', '1.fi.pool.ntp.org' ]
+#   }
 #
 # == Authors
 #
 # Samuli Seppänen <samuli.seppanen@gmail.com>
+#
 # Samuli Seppänen <samuli@openvpn.net>
 #
 # == License
 #
-# BSD-lisence
-# See file LICENSE for details
+# BSD-license. See file LICENSE for details.
 #
 class ntp
 (
