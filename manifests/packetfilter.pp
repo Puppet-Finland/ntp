@@ -7,9 +7,9 @@ class ntp::packetfilter
 (
     $allow_address_ipv4,
     $allow_address_ipv6
-)
-{
 
+) inherits ntp::params
+{
 
     # IPv4 rules
     firewall { '008 ipv4 accept ntp':

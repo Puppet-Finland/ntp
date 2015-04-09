@@ -2,7 +2,7 @@
 #
 # Install the ntp package
 #
-class ntp::install {
+class ntp::install inherits ntp::params {
 
     if $::osfamily == 'FreeBSD' {
         # We do nothing, as ntpd is always installed. We still need to include 

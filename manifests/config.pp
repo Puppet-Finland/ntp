@@ -9,10 +9,9 @@ class ntp::config
     $peer,
     $orphan_stratum,
     $restrict_addresses
-)
+
+) inherits ntp::params
 {
-    include os::params
-    include ntp::params
 
     # Check we have extra restrict lines
     if $restrict_addresses == '' {
