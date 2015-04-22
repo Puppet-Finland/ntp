@@ -9,8 +9,8 @@ class ntp::install inherits ntp::params {
         # this class to satisfy dependencies in the ntp::config class.
     } else {
         package { 'ntp-ntp':
-            name => 'ntp',
             ensure => installed,
+            name   => 'ntp',
         }
     }
 }

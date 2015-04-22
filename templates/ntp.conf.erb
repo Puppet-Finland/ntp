@@ -1,6 +1,6 @@
 ### THIS FILE IS MANAGED BY PUPPET. ANY MANUAL CHANGES WILL GET OVERWRITTEN.
 
-driftfile <%= scope.lookupvar('ntp::params::driftfile') %>
+driftfile <%= scope['ntp::params::driftfile'] %>
 
 statistics loopstats peerstats clockstats
 filegen loopstats file loopstats type day enable

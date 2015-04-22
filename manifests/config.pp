@@ -13,35 +13,35 @@ class ntp::config
 ) inherits ntp::params
 {
 
-    # Check we have extra restrict lines
-    if $restrict_addresses == '' {
-        $restrict_lines = undef
-    } else {
+    # Check that we have extra restrict lines
+    if $restrict_addresses {
         $restrict_lines = $restrict_addresses
+    } else {
+        $restrict_lines = undef
     }
 
     # Check if a peer is defined (for servers)
-    if $peer == '' {
-        $peer_line = undef
-    } else {
+    if $peer {
         $peer_line = "peer ${peer}"
+    } else {
+        $peer_line = undef
     }
 
     # Check if orphan mode is activated (for servers)
-    if $orphan_stratum == '' {
-        $orphan_line = undef
-    } else {
+    if $orphan_stratum {
         $orphan_line = "tos orphan ${orphan_stratum}"
+    } else {
+        $orphan_line = undef
     }
 
     file { 'ntp-ntp.conf':
-        name  => '/etc/ntp.conf',
-        ensure => present,
+        ensure  => present,
+        name    => '/etc/ntp.conf',
         content => template('ntp/ntp.conf.erb'),
-        owner => root,
-        group => "${::os::params::admingroup}",
-        mode  => 644,
+        owner   => $::os::params::adminuser,
+        group   => $::os::params::admingroup,
+        mode    => '0644',
         require => Class['ntp::install'],
-        notify => Class['ntp::service'],
+        notify  => Class['ntp::service'],
     }
 }

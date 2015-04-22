@@ -5,7 +5,7 @@
 #
 class ntp::params {
 
-    include os::params
+    include ::os::params
 
     case $::osfamily {
         'RedHat': {
@@ -25,7 +25,7 @@ class ntp::params {
         }
     }
 
-    if $::has_systemd == 'true' {
+    if str2bool($::has_systemd) {
         $service_start = "${::os::params::systemctl} start ${service_name}"
         $service_stop = "${::os::params::systemctl} stop ${service_name}"
     } else {
@@ -36,6 +36,6 @@ class ntp::params {
     # This can be used to work around startup scripts that don't have a proper
     # "status" target.
     $service_hasstatus = $::lsbdistcodename ? {
-        default => 'true',
+        default => true,
     }
 }

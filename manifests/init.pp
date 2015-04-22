@@ -5,6 +5,9 @@
 #
 # == Parameters
 #
+# [*manage*]
+#  Whether to manage ntp with Puppet or not. Valid values are 'yes' (default) 
+#  and 'no'.
 # [*ntp_servers*]
 #   An array containing a list of ntp servers to use. Defaults to global 
 #   variable $ntp_servers.
@@ -66,39 +69,39 @@
 #
 class ntp
 (
+    $manage = 'yes',
     $ntp_servers = $::ntp_servers,
-    $restrict_addresses = '',
+    $restrict_addresses = undef,
     $allow_address_ipv4 = '127.0.0.1',
-    $allow_address_ipv6 = '::1',    
-    $peer = '',
-    $orphan_stratum = '',
+    $allow_address_ipv6 = '::1',
+    $peer = undef,
+    $orphan_stratum = undef,
     $monitor_email = $::servermonitor
 )
 {
 
-# Rationale for this is explained in init.pp of the sshd module
-if hiera('manage_ntp', 'true') != 'false' {
+if $manage == 'yes' {
 
-    include ntp::install
+    include ::ntp::install
 
-    class { 'ntp::config':
-        ntp_servers => $ntp_servers,
+    class { '::ntp::config':
+        ntp_servers        => $ntp_servers,
         restrict_addresses => $restrict_addresses,
-        peer => $peer,
-        orphan_stratum => $orphan_stratum,
+        peer               => $peer,
+        orphan_stratum     => $orphan_stratum,
     }
 
-    include ntp::service
+    include ::ntp::service
 
     if tagged('packetfilter') {
-        class { 'ntp::packetfilter':
+        class { '::ntp::packetfilter':
             allow_address_ipv4 => $allow_address_ipv4,
             allow_address_ipv6 => $allow_address_ipv6,
         }
     }
 
     if tagged('monit') {
-        class { 'ntp::monit':
+        class { '::ntp::monit':
             monitor_email => $monitor_email,
         }
     }
