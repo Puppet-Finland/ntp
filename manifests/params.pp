@@ -10,14 +10,17 @@ class ntp::params {
     case $::osfamily {
         'RedHat': {
             $driftfile = '/var/lib/ntp/ntp.drift'
+            $pidfile = '/var/run/ntpd.pid'
             $service_name = 'ntpd'
         }
         'Debian': {
             $driftfile = '/var/lib/ntp/ntp.drift'
+            $pidfile = '/var/run/ntpd.pid'
             $service_name = 'ntp'
         }
         'FreeBSD': {
             $driftfile = '/var/db/ntpd.drift'
+            $pidfile = '/var/run/ntpd.pid'
             $service_name = 'ntpd'
         }
         default: {
