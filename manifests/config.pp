@@ -5,6 +5,7 @@
 #
 class ntp::config
 (
+    $ensure,
     $ntp_servers,
     $peer,
     $orphan_stratum,
@@ -34,8 +35,13 @@ class ntp::config
         $orphan_line = undef
     }
 
+    $ensure_file = $ensure ? {
+        /(present|running)/ => 'present',
+        'absent'            => 'absent',
+    }
+
     file { 'ntp-ntp.conf':
-        ensure  => present,
+        ensure  => $ensure_file,
         name    => '/etc/ntp.conf',
         content => template('ntp/ntp.conf.erb'),
         owner   => $::os::params::adminuser,

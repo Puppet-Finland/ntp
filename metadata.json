@@ -1,16 +1,16 @@
 {
   "name": "puppetfinland-ntp",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "author": "Puppet-Finland team",
   "license": "BSD license",
   "summary": "Setup ntp",
   "source": "https://github.com/Puppet-Finland/ntp.git",
   "project_page": "https://github.com/Puppet-Finland/ntp",
   "dependencies": [
-    { "name": "puppetfinland/monit", "version_requirement": ">= 0.5.0" },
+    { "name": "puppetfinland/monit", "version_requirement": ">= 0.5.1" },
     { "name": "puppetfinland/packetfilter", "version_requirement": ">= 0.5.0" },
     { "name": "puppetfinland/os", "version_requirement": ">= 0.5.5" },
-    { "name": "puppetfinland/systemd", "version_requirement": ">= 0.1.0" },
+    { "name": "puppetfinland/systemd", "version_requirement": ">= 0.1.1" },
     { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.0.0" }
   ]
 }

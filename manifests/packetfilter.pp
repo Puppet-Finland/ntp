@@ -5,6 +5,7 @@
 #
 class ntp::packetfilter
 (
+    $ensure,
     $allow_address_ipv4,
     $allow_address_ipv6
 
@@ -12,7 +13,6 @@ class ntp::packetfilter
 {
 
     # IPv4 rules
-
     # Set the allowable source address, unless 'any', in which case the 'source' 
     # parameter is left undefined.
     $source_v4 = $allow_address_ipv4 ? {
@@ -20,7 +20,13 @@ class ntp::packetfilter
         default => $allow_address_ipv4,
     }
 
+    $ensure_firewall = $ensure ? {
+        /(running|present)/ => 'present',
+        'absent'            => 'absent',
+    }
+
     firewall { '008 ipv4 accept ntp':
+        ensure   => $ensure_firewall,
         provider => 'iptables',
         chain    => 'INPUT',
         proto    => 'udp',
@@ -36,6 +42,7 @@ class ntp::packetfilter
     }
 
     firewall { '008 ipv6 accept ntp':
+        ensure   => $ensure_firewall,
         provider => 'ip6tables',
         chain    => 'INPUT',
         proto    => 'udp',

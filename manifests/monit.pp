@@ -5,11 +5,13 @@
 #
 class ntp::monit
 (
+    $ensure,
     $monitor_email
 
 ) inherits ntp::params
 {
     monit::fragment { 'ntp-ntp.monit':
+        ensure     => $ensure,
         modulename => 'ntp',
     }
 }

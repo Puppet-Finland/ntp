@@ -12,6 +12,12 @@ class ntp::params {
             $driftfile = '/var/lib/ntp/ntp.drift'
             $pidfile = '/var/run/ntpd.pid'
             $service_name = 'ntpd'
+            $service_opts = $::operatingsystemmajrelease ? {
+                6       => "-p ${pidfile} -g -u ntp:ntp",
+                7       => "-p ${pidfile} -g",
+                21      => "-p ${pidfile} -g",
+                default => "-p ${pidfile} -g",
+            }
         }
         'Debian': {
             $driftfile = '/var/lib/ntp/ntp.drift'

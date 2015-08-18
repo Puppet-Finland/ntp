@@ -6,8 +6,10 @@
 # == Parameters
 #
 # [*manage*]
-#  Whether to manage ntp with Puppet or not. Valid values are 'yes' (default) 
-#  and 'no'.
+#   Whether to manage ntp with Puppet or not. Valid values are 'yes' (default) 
+#   and 'no'.
+# [*ensure*]
+#   Status of ntpd. Valid values are 'running', 'present' (default) and 'absent'
 # [*ntp_servers*]
 #   An array containing a list of ntp servers to use. Defaults to global 
 #   variable $ntp_servers.
@@ -69,6 +71,7 @@
 #
 class ntp
 (
+    $ensure = 'present',
     $manage = 'yes',
     $ntp_servers = $::ntp_servers,
     $restrict_addresses = undef,
@@ -82,19 +85,25 @@ class ntp
 
 if $manage == 'yes' {
 
-    include ::ntp::install
+    class { '::ntp::install':
+        ensure => $ensure,
+    }
 
     class { '::ntp::config':
+        ensure             => $ensure,
         ntp_servers        => $ntp_servers,
         restrict_addresses => $restrict_addresses,
         peer               => $peer,
         orphan_stratum     => $orphan_stratum,
     }
 
-    include ::ntp::service
+    class { '::ntp::service':
+        ensure => $ensure,
+    }
 
     if tagged('packetfilter') {
         class { '::ntp::packetfilter':
+            ensure             => $ensure,
             allow_address_ipv4 => $allow_address_ipv4,
             allow_address_ipv6 => $allow_address_ipv6,
         }
@@ -102,6 +111,7 @@ if $manage == 'yes' {
 
     if tagged('monit') {
         class { '::ntp::monit':
+            ensure        => $ensure,
             monitor_email => $monitor_email,
         }
     }
