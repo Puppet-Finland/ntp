@@ -7,12 +7,19 @@ class ntp::config
 (
     $ensure,
     $ntp_servers,
+    $ntp_pools,
     $peer,
     $orphan_stratum,
     $restrict_addresses
 
 ) inherits ntp::params
 {
+
+    if ($ntp_servers) or ($ntp_pools) {
+        # Fine, do nothing
+    } else {
+        fail('ERROR: neither $ntp_servers or $ntp_pools parameter defined!')
+    }
 
     # Check that we have extra restrict lines
     if $restrict_addresses {

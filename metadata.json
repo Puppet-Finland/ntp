@@ -1,6 +1,6 @@
 {
   "name": "puppetfinland-ntp",
-  "version": "0.5.3",
+  "version": "0.6.0",
   "author": "Puppet-Finland team",
   "license": "BSD license",
   "summary": "Setup ntp",

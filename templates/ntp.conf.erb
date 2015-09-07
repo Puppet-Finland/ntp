@@ -8,8 +8,15 @@ filegen peerstats file peerstats type day enable
 filegen clockstats file clockstats type day enable
 
 # Configure external time sources
-<% @ntp_servers.each do |val| -%>
+<% if @ntp_servers -%>
+<% ntp_servers.each do |val| -%>
 server <%= val %> iburst
+<% end -%>
+<% end -%>
+<% if @ntp_pools -%>
+<% ntp_pools.each do |val| -%>
+<%= scope['ntp::params::pool_directive'] %> <%= val %> iburst
+<% end -%>
 <% end -%>
 
 # Access control

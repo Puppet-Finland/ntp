@@ -11,8 +11,17 @@
 # [*ensure*]
 #   Status of ntpd. Valid values are 'running', 'present' (default) and 'absent'
 # [*ntp_servers*]
-#   An array containing a list of ntp servers to use. Defaults to global 
-#   variable $ntp_servers.
+#   An array containing a list of ntp servers to use. Only use this for static 
+#   server address, not ntp pools: on RedHat-based operating systems having a 
+#   ntp pool as the value for "server" directive will cause spontaneous ntpd 
+#   restarts (signal 15), which drives things like monit crazy. The default 
+#   value for this parameter is undef. This or the $ntp_pools parameter needs to 
+#   be defined or catalog compilation will fail.
+# [*ntp_pools*]
+#   An array containing a list of ntp server _pools_ to use. Note that ntpd 
+#   bundled with (most?) Debian-based operating systems and FreeBSD does not 
+#   have the "pool" option, so any pools you define are converted into "server" 
+#   lines instead. Defaults to undef.
 # [*restrict_addresses*]
 #   An array containing a list of addresses from which to allow connections to 
 #   ntpd. Note that access from '127.0.0.1' and '::1' is automatically allowed. 
@@ -73,7 +82,8 @@ class ntp
 (
     $ensure = 'present',
     $manage = 'yes',
-    $ntp_servers = $::ntp_servers,
+    $ntp_servers = undef,
+    $ntp_pools = undef,
     $restrict_addresses = undef,
     $allow_address_ipv4 = '127.0.0.1',
     $allow_address_ipv6 = '::1',
@@ -92,6 +102,7 @@ if $manage == 'yes' {
     class { '::ntp::config':
         ensure             => $ensure,
         ntp_servers        => $ntp_servers,
+        ntp_pools          => $ntp_pools,
         restrict_addresses => $restrict_addresses,
         peer               => $peer,
         orphan_stratum     => $orphan_stratum,

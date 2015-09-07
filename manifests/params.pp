@@ -18,16 +18,19 @@ class ntp::params {
                 21      => "-p ${pidfile} -g",
                 default => "-p ${pidfile} -g",
             }
+            $pool_directive = 'pool'
         }
         'Debian': {
             $driftfile = '/var/lib/ntp/ntp.drift'
             $pidfile = '/var/run/ntpd.pid'
             $service_name = 'ntp'
+            $pool_directive = 'server'
         }
         'FreeBSD': {
             $driftfile = '/var/db/ntpd.drift'
             $pidfile = '/var/run/ntpd.pid'
             $service_name = 'ntpd'
+            $pool_directive = 'server'
         }
         default: {
             fail("Unsupported operating system ${::osfamily}")
