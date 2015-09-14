@@ -8,7 +8,7 @@ filegen peerstats file peerstats type day enable
 filegen clockstats file clockstats type day enable
 
 # Configure external time sources
-<% ntp_servers.each do |val| -%>
+<% @ntp_servers.each do |val| -%>
 server <%= val %> iburst
 <% end -%>
 
@@ -27,10 +27,10 @@ restrict <%= val %> notrap nomodify
 # An ntpd acting as a server for other ntp daemons needs a fallback in case it 
 # loses connectivity to external time sources - hence the "tos orphan <stratum>" 
 # entry.
-<%= orphan_line %>
+<%= @orphan_line %>
 <% end %>
 
 <% if @peer_line -%>
 # Co-operate with another ntpd peer
-<%= peer_line %>
+<%= @peer_line %>
 <% end %>
