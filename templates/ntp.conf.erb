@@ -18,7 +18,7 @@ restrict -6 default kod notrap nomodify nopeer noquery
 restrict 127.0.0.1
 restrict ::1
 <% if @restrict_lines -%>
-<% restrict_lines.each do |val| -%>
+<% @restrict_lines.each do |val| -%>
 restrict <%= val %> notrap nomodify
 <% end -%>
 <% end %>
