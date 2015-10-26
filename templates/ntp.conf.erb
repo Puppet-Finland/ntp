@@ -14,7 +14,7 @@ server <%= val %> iburst
 <% end -%>
 <% end -%>
 <% if @ntp_pools -%>
-<% ntp_pools.each do |val| -%>
+<% @ntp_pools.each do |val| -%>
 <%= scope['ntp::params::pool_directive'] %> <%= val %> iburst
 <% end -%>
 <% end -%>
