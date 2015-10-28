@@ -9,7 +9,7 @@ filegen clockstats file clockstats type day enable
 
 # Configure external time sources
 <% if @ntp_servers -%>
-<% ntp_servers.each do |val| -%>
+<% @ntp_servers.each do |val| -%>
 server <%= val %> iburst
 <% end -%>
 <% end -%>
