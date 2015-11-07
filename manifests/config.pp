@@ -57,4 +57,9 @@ class ntp::config
         require => Class['ntp::install'],
         notify  => Class['ntp::service'],
     }
+
+    if $::osfamily == 'RedHat' {
+        include ::ntp::config::redhat
+    }
+
 }
