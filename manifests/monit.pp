@@ -12,6 +12,7 @@ class ntp::monit
 {
     monit::fragment { 'ntp-ntp.monit':
         ensure     => $ensure,
+        basename   => 'ntp',
         modulename => 'ntp',
     }
 }
