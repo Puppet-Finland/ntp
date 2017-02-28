@@ -6,8 +6,12 @@
 # == Parameters
 #
 # [*manage*]
-#   Whether to manage ntp with Puppet or not. Valid values are 'yes' (default) 
-#   and 'no'.
+#   Whether to manage ntp with Puppet or not. Valid values are true (default) 
+#   and false.
+# [*manage_packetfilter*]
+#   Manage packet filtering rules. Valid values are true (default) and false. 
+# [*manage_monit*]
+#   Manage monit rules. Valid values are true (default) and false. 
 # [*ensure*]
 #   Status of ntpd. Valid values are 'running', 'present' (default) and 'absent'
 # [*ntp_servers*]
@@ -62,12 +66,6 @@
 #   Email address where local service monitoring software sends it's reports to.
 #   Defaults to top scope variable $::servermonitor.
 #
-# == Examples
-#
-#   class { 'ntp':
-#       ntp_servers => [ '0.fi.pool.ntp.org', '1.fi.pool.ntp.org' ]
-#   }
-#
 # == Authors
 #
 # Samuli Seppänen <samuli.seppanen@gmail.com>
@@ -80,20 +78,22 @@
 #
 class ntp
 (
-    $ensure = 'present',
-    $manage = 'yes',
-    $ntp_servers = undef,
-    $ntp_pools = undef,
-    $restrict_addresses = undef,
-    $allow_address_ipv4 = '127.0.0.1',
-    $allow_address_ipv6 = '::1',
-    $peer = undef,
-    $orphan_stratum = undef,
-    $monitor_email = $::servermonitor
+            $ensure = 'present',
+    Boolean $manage = true,
+    Boolean $manage_packetfilter = true,
+    Boolean $manage_monit = true,
+            $ntp_servers = undef,
+            $ntp_pools = undef,
+            $restrict_addresses = undef,
+            $allow_address_ipv4 = '127.0.0.1',
+            $allow_address_ipv6 = '::1',
+            $peer = undef,
+            $orphan_stratum = undef,
+            $monitor_email = $::servermonitor
 )
 {
 
-if $manage == 'yes' {
+if $manage {
 
     class { '::ntp::install':
         ensure => $ensure,
@@ -112,7 +112,7 @@ if $manage == 'yes' {
         ensure => $ensure,
     }
 
-    if tagged('packetfilter') {
+    if $manage_packetfilter {
         class { '::ntp::packetfilter':
             ensure             => $ensure,
             allow_address_ipv4 => $allow_address_ipv4,
@@ -120,7 +120,7 @@ if $manage == 'yes' {
         }
     }
 
-    if tagged('monit') {
+    if $manage_monit {
         class { '::ntp::monit':
             ensure        => $ensure,
             monitor_email => $monitor_email,

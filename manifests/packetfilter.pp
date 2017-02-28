@@ -25,7 +25,7 @@ class ntp::packetfilter
         'absent'            => 'absent',
     }
 
-    firewall { '008 ipv4 accept ntp':
+    @firewall { '008 ipv4 accept ntp':
         ensure   => $ensure_firewall,
         provider => 'iptables',
         chain    => 'INPUT',
@@ -33,6 +33,7 @@ class ntp::packetfilter
         source   => $source_v4,
         dport    => 123,
         action   => 'accept',
+        tag      => 'default',
     }
 
     # IPv6 rules
@@ -41,7 +42,7 @@ class ntp::packetfilter
         default => $allow_address_ipv6,
     }
 
-    firewall { '008 ipv6 accept ntp':
+    @firewall { '008 ipv6 accept ntp':
         ensure   => $ensure_firewall,
         provider => 'ip6tables',
         chain    => 'INPUT',
@@ -49,5 +50,6 @@ class ntp::packetfilter
         source   => $source_v6,
         dport    => 123,
         action   => 'accept',
+        tag      => 'default',
     }
 }

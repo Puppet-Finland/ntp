@@ -10,9 +10,10 @@ class ntp::monit
 
 ) inherits ntp::params
 {
-    monit::fragment { 'ntp-ntp.monit':
+    @monit::fragment { 'ntp-ntp.monit':
         ensure     => $ensure,
         basename   => 'ntp',
         modulename => 'ntp',
+        tag        => 'default',
     }
 }
