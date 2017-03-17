@@ -6,8 +6,8 @@
 class ntp::packetfilter
 (
     $ensure,
-    $allow_address_ipv4,
-    $allow_address_ipv6
+    String $allow_address_ipv4,
+    String $allow_address_ipv6
 
 ) inherits ntp::params
 {

@@ -6,11 +6,11 @@
 class ntp::config
 (
     $ensure,
-    $ntp_servers,
-    $ntp_pools,
-    $peer,
-    $orphan_stratum,
-    $restrict_addresses
+    Array[String]           $ntp_servers,
+    Optional[Array[String]] $ntp_pools,
+    Optional[String]        $peer,
+    Optional[Integer]       $orphan_stratum,
+    Optional[Array[String]] $restrict_addresses
 
 ) inherits ntp::params
 {

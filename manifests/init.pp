@@ -78,7 +78,7 @@
 #
 class ntp
 (
-            $ensure = 'present',
+    Enum['present','running','absent'] $ensure = 'present',
     Boolean $manage = true,
     Boolean $manage_packetfilter = true,
     Boolean $manage_monit = true,
@@ -89,7 +89,7 @@ class ntp
             $allow_address_ipv6 = '::1',
             $peer = undef,
             $orphan_stratum = undef,
-            $monitor_email = $::servermonitor
+    String  $monitor_email = $::servermonitor
 )
 {
 
