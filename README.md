@@ -1,26 +1,38 @@
 ntp
 ===
 
-A Puppet module for installing and configuring ntp
+A Puppet module for installing and configuring ntp. Comes with optional 
+iptables/ip6tables and monit support.
 
 # Module usage
 
-* [Class: ntp](manifests/init.pp)
+Simple usage to keep the clock synchronized:
 
-# Dependencies
+    class { '::ntp':
+      ntp_servers => ['0.us.pool.ntp.org',
+                      '1.us.pool.ntp.org',
+                      '2.us.pool.ntp.org',
+                      '3.us.pool.ntp.org',
+                     ],
+    }
 
-See [metadata.json](metadata.json).
+Configure ntpd to serve other hosts as an ntp proxy. Access is restricted by IP 
+by both ntpd itself ($restrict_addresses) and by iptables ($allow_address_ipv4):
 
-# Operating system support
+    class { '::ntp':
+      allow_address_ipv4 => '10.0.0.0/8',
+      orphan_stratum     => 12,
+      restrict_addresses => [ '10.0.0.0 mask 255.0.0.0' ],
+      peer               => '10.110.40.5',
+      ntp_servers => ['0.us.pool.ntp.org',
+                      '1.us.pool.ntp.org',
+                      '2.us.pool.ntp.org',
+                      '3.us.pool.ntp.org',
+                     ],
+    }
 
-This module has been tested on
+The $peer is the another proxy with which this ntpd instance communicates with. 
+This helps maintain clock syncing if external sources ($ntp_servers) become 
+unresponsive.
 
-* Ubuntu 12.04, 14.04
-* Debian 7 and 8
-* CentOS 6 and 7
-* FreeBSD 9 and 10
-
-All UNIXy operating systems should work out of the box or with small 
-modifications.
-
-For details see [params.pp](manifests/params.pp).
+For detail see [init.pp](manifests/init.pp).

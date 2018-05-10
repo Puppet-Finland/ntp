@@ -2,7 +2,7 @@
   "name": "puppetfinland-ntp",
   "version": "1.0.0",
   "author": "Puppet-Finland team",
-  "summary": "Setup ntpd with optional iptables/ip6tables and monit support",
+  "summary": "Setup ntpd with optional firewall, monit and proxy support",
   "license": "BSD-2-Clause",
   "source": "https://github.com/Puppet-Finland/puppet-ntp.git",
   "project_page": "https://github.com/Puppet-Finland/puppet-ntp",
@@ -43,6 +43,9 @@
         "8",
         "9"
       ]
+    },
+    {
+      "operatingsystem": "FreeBSD"
     },
     {
       "operatingsystem": "RedHat",
