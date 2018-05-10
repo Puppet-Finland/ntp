@@ -2,7 +2,7 @@
   "name": "puppetfinland-ntp",
   "version": "1.0.0",
   "author": "Puppet-Finland team",
-  "license": "BSD license",
+  "license": "BSD-2-Clause",
   "summary": "Setup ntp",
   "source": "https://github.com/Puppet-Finland/ntp.git",
   "project_page": "https://github.com/Puppet-Finland/ntp",
