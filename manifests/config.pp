@@ -6,7 +6,7 @@
 class ntp::config
 (
     $ensure,
-    Array[String]           $ntp_servers,
+    Optional[Array[String]] $ntp_servers,
     Optional[Array[String]] $ntp_pools,
     Optional[String]        $peer,
     Optional[Integer]       $orphan_stratum,
