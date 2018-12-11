@@ -18,7 +18,9 @@ class ntp::config
     if ($ntp_servers) or ($ntp_pools) {
         # Fine, do nothing
     } else {
-        fail('ERROR: neither $ntp_servers or $ntp_pools parameter defined!')
+        unless $ensure == 'absent' {
+            fail('ERROR: neither $ntp_servers nor $ntp_pools parameter defined!')
+        }
     }
 
     # Check that we have extra restrict lines
