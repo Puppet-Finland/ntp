@@ -31,12 +31,16 @@ class ntp::service
         require   => [ Class['ntp::config'], Class['ntp::service::redhat'] ],
     }
 
-    if str2bool($::has_systemd) {
-        systemd::service_fragment { 'ntp':
-            ensure       => $ensure,
-            service_name => $::ntp::params::service_name,
-            pidfile      => $::ntp::params::pidfile,
+    if $::systemd {
+        $pidfile = $::ntp::params::pidfile
+        $restart = 'no'
+
+        ::systemd::dropin_file { 'ntp':
+            ensure   => $ensure,
+            unit     => "${::ntp::params::service_name}.service",
+            content  => template('ntp/ntp.service.erb'),
+            filename => 'puppet.conf',
+            mode     => '0755',
         }
     }
-
 }
